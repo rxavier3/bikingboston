@@ -8,9 +8,98 @@ html, body {
     align-items: center;     /* Center vertically */
   }
      
-  #map {
+#map {
     width: 100%;    /* Adjust width to your desired size */
     height: 100%;   /* Adjust height to your desired size */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for effect */
     border-radius: 8px; /* Optional: rounded corners */
+}
+
+#map svg {      /* Set the opacity to 50% */
+    position: absolute; /* Position the SVG absolutely within the map container */
+    z-index: 1;         /* Ensure the SVG is on top of the map */
+    width: 100%;        /* Make the SVG fill the width of the map container */
+    height: 100%;       /* Make the SVG fill the height of the map container */
+    pointer-events: none; /* Allow map interactions to work through the SVG */
+}
+#map svg circle {
+    pointer-events: auto;
+    --color-departures: steelblue;
+    --color-arrivals: darkorange;
+    --color: color-mix(
+    in oklch,
+    var(--color-departures) calc(100% * var(--departure-ratio)),
+    var(--color-arrivals)
+);
+fill: var(--color); /* Enable tooltips for circles */
   }
+  header {
+    display: flex;
+    gap: 1em;
+    align-items: baseline;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Push the label to the right */
+  header label {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  
+  /* Style the slider */
+  header input[type="range"] {
+    width: 200px;
+  }
+  
+  /* Style the <time> and <em> elements */
+  header time,
+  header em {
+    display: block;
+    font-size: 0.9em;
+  }
+  
+  header em {
+    color: #666;
+    font-style: italic;
+  }
+  
+  /* Hide <time> when the slider is at -1 */
+  header input[type="range"][value="-1"] + time {
+    display: none;
+  }
+  
+  /* Hide <em> when the slider is not at -1 */
+  header input[type="range"]:not([value="-1"]) + time + em {
+    display: none;
+  }
+ :root {
+  --color-departures: steelblue;
+  --color-arrivals: darkorange;
+}
+
+.legend {
+  display: flex;
+  gap: 1px; /* Small gap between swatches */
+  margin-block: 20px; /* Space between legend and map */
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.legend > div {
+  flex: 1; /* Equal width for each swatch */
+  padding: 10px 20px; /* More horizontal padding */
+  text-align: center; /* Center text */
+  color: white; /* Ensure text is readable */
+  background-color: color-mix(
+    in oklch,
+    var(--color-departures) calc(100% * var(--departure-ratio)),
+    var(--color-arrivals)
+  );
+  border-radius: 3px;
+}
